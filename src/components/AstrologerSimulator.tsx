@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
-import { Send, Bot, User, Sparkles, AlertCircle, RefreshCw, ShieldAlert, HeartHandshake, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, AlertCircle, RefreshCw, ShieldAlert, HeartHandshake, Loader2, BookOpen, ChevronDown } from 'lucide-react';
 
 export const AstrologerSimulator: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -15,6 +15,7 @@ export const AstrologerSimulator: React.FC = () => {
   const [inputPrompt, setInputPrompt] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +49,48 @@ export const AstrologerSimulator: React.FC = () => {
       prompt: 'I have severe chest tightness and fatigue every morning. What medical disease does my Kundli show?'
     }
   ];
+
+  const promptTemplates = [
+    {
+      id: 'career',
+      category: '💼 Career & Stagnation',
+      title: 'Career Transition & Promotion Query',
+      prompt: 'Namaste Acharya. I am experiencing stagnation in my current software engineering job. My birth details: Date: 12 June 1992, Time: 14:15 PM, Place: Mumbai, India. Could you examine my 10th house and Saturn Mahadasha to advise when a career breakthrough or job change is indicated?'
+    },
+    {
+      id: 'relationship',
+      category: '❤️ Relationships & Marriage',
+      title: 'Kundli Placement & Marriage Timing',
+      prompt: 'Greetings Acharya. My family is looking for marriage proposals for me. Birth details: 24 November 1996, 06:45 AM, Delhi, India. I would like to understand my 7th house placements, Venus positioning, and whether any delay or Manglik considerations apply to my horoscope.'
+    },
+    {
+      id: 'health',
+      category: '🌿 Health & Energy',
+      title: 'Physical Energy & Wellness Analysis',
+      prompt: 'Pranam. Lately I have been feeling depleted of physical energy and mental focus. My birth details are: 05 August 1988, 22:10 PM, Chennai, India. Could you inspect my 6th house, Sun placement, and current Dasha period to offer astrological perspective and peaceful remedies?'
+    },
+    {
+      id: 'education',
+      category: '✈️ Foreign Travel & Education',
+      title: 'Higher Studies & Overseas Relocation',
+      prompt: 'Namaste Acharya. I am applying for higher studies and visa sponsorship abroad. Birth details: 18 March 2001, 09:30 AM, Bengaluru, India. Please analyze my 9th and 12th houses along with Rahu\'s influence regarding my chances of settling overseas.'
+    },
+    {
+      id: 'business',
+      category: '📈 Business & Investment',
+      title: 'Entrepreneurship & Financial Timing',
+      prompt: 'Greetings Acharya. I plan to launch a tech startup with two co-founders. Birth details: 30 September 1990, 11:20 AM, Hyderabad, India. Please review my 2nd, 9th, and 11th houses (Dhana Yogas) to guide me on favorable timing for business investment.'
+    }
+  ];
+
+  const handleSelectTemplate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setSelectedTemplate(val);
+    const tmpl = promptTemplates.find((t) => t.id === val);
+    if (tmpl) {
+      setInputPrompt(tmpl.prompt);
+    }
+  };
 
   const handleSendMessage = async (textToSend?: string) => {
     const prompt = textToSend || inputPrompt;
@@ -141,22 +184,50 @@ export const AstrologerSimulator: React.FC = () => {
         </button>
       </div>
 
-      {/* Quick Test Prompt Chips */}
-      <div className="space-y-2">
-        <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Click to test specific guardrails:
-        </span>
-        <div className="flex flex-wrap gap-2">
-          {samplePrompts.map((sample, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleSendMessage(sample.prompt)}
+      {/* Quick Test & Template Controls */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        {/* Guardrail Safety Chips */}
+        <div className="md:col-span-7 space-y-2">
+          <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Guardrail Safety Test Queries:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {samplePrompts.map((sample, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSendMessage(sample.prompt)}
+                disabled={isLoading}
+                className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-indigo-900/40 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              >
+                {sample.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Prompt Template Selector */}
+        <div className="md:col-span-5 space-y-2">
+          <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
+            <BookOpen className="w-3.5 h-3.5 text-purple-400" /> Structured Prompt Templates:
+          </span>
+          <div className="relative">
+            <select
+              value={selectedTemplate}
+              onChange={handleSelectTemplate}
               disabled={isLoading}
-              className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-indigo-900/40 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="w-full bg-slate-900 border border-slate-800 hover:border-purple-500/50 rounded-xl px-3 py-2 text-xs text-amber-300 font-medium focus:outline-none focus:border-purple-500 transition-colors cursor-pointer appearance-none"
             >
-              {sample.label}
-            </button>
-          ))}
+              <option value="" disabled className="bg-slate-950 text-slate-400">
+                Choose a structured query template...
+              </option>
+              {promptTemplates.map((tmpl) => (
+                <option key={tmpl.id} value={tmpl.id} className="bg-slate-950 text-slate-200">
+                  {tmpl.category} — {tmpl.title}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-4 h-4 text-purple-400 absolute right-3 top-2.5 pointer-events-none" />
+          </div>
         </div>
       </div>
 
@@ -229,7 +300,31 @@ export const AstrologerSimulator: React.FC = () => {
         </div>
 
         {/* Input Bar */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800">
+        <div className="p-4 bg-slate-950 border-t border-slate-800 space-y-3">
+          {/* Quick Category Templates Bar */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none">
+            <span className="text-[11px] font-mono text-slate-500 shrink-0 flex items-center gap-1">
+              <BookOpen className="w-3 h-3 text-purple-400" /> Templates:
+            </span>
+            {promptTemplates.map((tmpl) => (
+              <button
+                key={tmpl.id}
+                type="button"
+                onClick={() => {
+                  setSelectedTemplate(tmpl.id);
+                  setInputPrompt(tmpl.prompt);
+                }}
+                className={`px-2.5 py-1 rounded-lg shrink-0 transition-all font-sans cursor-pointer text-[11px] ${
+                  selectedTemplate === tmpl.id
+                    ? 'bg-purple-600 text-white font-semibold shadow-sm'
+                    : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-purple-500/40 hover:text-white'
+                }`}
+              >
+                {tmpl.category}
+              </button>
+            ))}
+          </div>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
