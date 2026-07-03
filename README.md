@@ -1,20 +1,34 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# AI Vedic Astrologer
 
-# Run and deploy your AI Studio app
+## Overview
+## Features
+## Tech Stack
+## Architecture
+## Installation
+## Usage
+## AI Workflow
+## Screenshots
+## Future Enhancements
+## Live Demo
+## Author
+- AI-Powered Astrology Chat
+- Personalized Kundli Analysis
+- Horoscope Predictions
+- Career Guidance
+- Love & Marriage Compatibility
+- Finance Insights
+- Health Guidance
+- Planetary Analysis
+- Responsive UI
+- Secure Authentication
+Frontend: React.js, Next.js, Tailwind CSS, TypeScript
 
-This contains everything you need to run your app locally.
+Backend: Node.js, Express.js
 
-View your app in AI Studio: https://ai.studio/apps/cb7d31b6-9113-4e8f-83e3-c6adfa761dfd
+Database: Firebase Firestore
 
-## Run Locally
+Authentication: Firebase Auth
 
-**Prerequisites:**  Node.js
+AI: Gemini API / Qwen 2.5 (if applicable)
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Deployment: Vercel
