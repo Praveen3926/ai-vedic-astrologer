@@ -1,0 +1,6 @@
+{
+  "name": "AI Vedic Astrologer",
+  "description": "Comprehensive technical report, synthetic dataset explorer, interactive Qwen fine-tuning script generator, vLLM VPS deployment configurator, and live AI Vedic Astrologer testing sandbox.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
